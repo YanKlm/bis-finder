@@ -5,7 +5,7 @@
     "options": {
         "reloadable": true,
     },
-    "servers": ["https://raw.githubusercontent.com/hsdn/npc-summoner/master/"],
+    "servers": ["https://raw.githubusercontent.com/YanKlm/bis-finder/main/"],
     "disableAutoUpdate": false,
     "version": "28/12/2022"
 }
