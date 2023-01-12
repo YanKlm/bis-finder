@@ -1,11 +1,13 @@
 {
-    "name": "bis-finder",
-    "author": "YK",
-    "description": "Find BIS armor in inverntory",
-    "options": {
-        "reloadable": true,
-    },
-    "servers": ["https://raw.githubusercontent.com/YanKlm/bis-finder/main/"],
-    "disableAutoUpdate": false,
-    "version": "28/12/2022"
+  "name": "bis-finder",
+  "author": "YK",
+  "description": "Find BIS armor in inverntory",
+  "options": {
+    "reloadable": true
+  },
+  "servers": [
+    "https://raw.githubusercontent.com/YanKlm/bis-finder/main/"
+  ],
+  "disableAutoUpdate": false,
+  "version": "13/01/2023"
 }

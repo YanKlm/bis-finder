@@ -3,8 +3,8 @@ module.exports = function bisfinder(mod) {
 	let bis_enable = false;
 	let debug_mode = false;
 
-	const batteredOathTokenBIS = [480004, 480104, 480204,480304] //power stats
-	const batteredOathIDs = [88958,88959,88960,88961,88962,88963,88964,88965,88966,88967,88968,88969,88970,88971,88972,88973,88974,88975,88976,88977,88978,88979]
+	const batteredOathTokenBIS = [480004, 480104, 480204,480304]; //power stats
+	const batteredOathIDs = [88958,88959,88960,88961,88962,88963,88964,88965,88966,88967,88968,88969,88970,88971,88972,88973,88974,88975,88976,88977,88978,88979];
 	const armor = { //BIS is phys or mag crit for hands, and phys or mag ampl. for body and foot; IDs only include 3-stat Annihilation/DL gear. 
 		"mag":{
 		  "ID":[89660,89652,89644,89636,89628,89620,89684,89676,89668],
@@ -17,22 +17,21 @@ module.exports = function bisfinder(mod) {
 	  };
 	  	
 	class Gearlist{
-		list = new Set();
-		#raidmsg =(msg)=>{
+		constructor(mod) {
+        this.list = new Set();
+		}
+    	raidmsg(msg) {
 			mod.send("S_CHAT", mod.majorPatchVersion >= 108 ? 4 : 3, {
 				"channel": 25,
 				"message": msg
 			});
-		};
-		constructor(mod) {
-			this.mod = mod;
 		}
 		ins(item){
 			if (!this.list.has(item.dbid)){
-			this.list.add(item.dbid)
-			this.#raidmsg(`BIS ${item.data.name} found at slot ${item.slot+1} `);
+			this.list.add(item.dbid);
+			this.raidmsg(`BIS ${item.data.name} found at slot ${item.slot+1} `);
 		}}
-	 };
+	 }
 
 	let gears = new Gearlist();
 	let tokens = new Gearlist();
@@ -45,26 +44,8 @@ module.exports = function bisfinder(mod) {
 		}, []);
 	}
 
-	/*
-	function filterBisGear(list){
-		let bis = [];
-		for (const item of list){
-			let passivities = item?.passivitySets[0].passivities;
-			if(armor.mag.ID.includes(item.id)){ 
-				let match = passivities.filter(passiv=>armor.mag.BIS.includes(passiv)).length;
-				if (match==3) bis.push(item);
-			}
-			if(armor.phys.ID.includes(item.id)){
-				let match = passivities.filter(passiv=>armor.phys.BIS.includes(passiv)).length;
-				if (match==3) bis.push(item);
-			}
-		}
-		return bis
-	}
-	*/
-
 	function filterBisOathTokens(list)  {
-		return list.filter(el=>batteredOathIDs.includes(el.id)).filter(item=> item.passivitySets[0].passivities.filter(el=> batteredOathTokenBIS.includes(el)).length >=3)
+		return list.filter(el=>batteredOathIDs.includes(el.id)).filter(item=> item.passivitySets[0].passivities.filter(el=> batteredOathTokenBIS.includes(el)).length >=3);
 	}    
 
 
@@ -74,11 +55,11 @@ module.exports = function bisfinder(mod) {
 		if (!bis_enable) debug_mode = false;
 		mod.command.message(`BIS ${bis_enable ? "enabled" : "disabled"}`);
 		return;
-		};
+		}
 		if (arg!="debug") {
-			mod.command.message("BIS: Unknown argument")
+			mod.command.message("BIS: Unknown argument");
 			return;
-		};
+		}
 		bis_enable = true;
 		debug_mode= !debug_mode;
 		mod.command.message(`BIS debug mode ${bis_enable ? "enabled" : "disabled"}`);
@@ -89,10 +70,10 @@ module.exports = function bisfinder(mod) {
 		let bagItems=mod.game.inventory.bagItems;
 		if (typeof(bagItems)!=='object' || bagItems.length<1) return;
 
-		let OathTokens = filterBisOathTokens(bagItems)
+		let OathTokens = filterBisOathTokens(bagItems);
 		if (OathTokens) OathTokens.forEach(item=> tokens.ins(item));
 
-		let BISGear = filterBisGear(bagItems)
+		let BISGear = filterBisGear(bagItems);
 		if (BISGear) BISGear.forEach(item => gears.ins(item));
 		
 		if (debug_mode){
@@ -100,6 +81,6 @@ module.exports = function bisfinder(mod) {
 			mod.log(`Slot ${item.slot+1}: ${item.data.name} ID: ${item.id} UniqueID: ${item.dbid} Passivities: ${item.passivitySets[0].passivities}`);
 			});  
 		}
-     })
+     });
 	
-}
+};
